@@ -34,6 +34,21 @@ public class JpaMain {
 
       System.out.println("findMember: " + findMember);
 
+      List<Object[]> resultList = em.createQuery("select m.username, m.age from Member m")
+          .getResultList();
+      for (Object[] result : resultList) {
+        System.out.println("result[0] = " + result[0]);
+        System.out.println("result[1] = " + result[1]);
+      }
+
+      List<MemberDTO> resultList2 = em.createQuery(
+              "select new jpql.MemberDTO(m.username, m.age) from Member m", MemberDTO.class)
+          .getResultList();
+      for (MemberDTO m : resultList2) {
+        System.out.println("m.getUsername() = " + m.getUsername());
+        System.out.println("m.getAge() = " + m.getAge());
+      }
+
       tx.commit();
     } catch (Exception e) {
       tx.rollback();
